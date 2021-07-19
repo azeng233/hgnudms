@@ -32,11 +32,27 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Test
-    public void test() {
-        UserServiceImpl studentService = new UserServiceImpl();
-        User user = studentService.login("admin", "123456");
-        System.out.println(user.getUserPassword());
+    @Override
+    public boolean updatePwd(String userCode, String userPassword) {
+        Connection connection = null;
+        boolean flag = false;
+        try {
+            connection = BaseDao.getConnection();
+            if (userDao.updatePwd(connection, userCode, userPassword) > 0) {
+                flag = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResources(connection, null, null);
+        }
+        return flag;
     }
 
+    // @Test
+    // public void test() {
+    //     UserServiceImpl studentService = new UserServiceImpl();
+    //     User user = studentService.login("admin", "123456");
+    //     System.out.println(user.getUserPassword());
+    // }
 }

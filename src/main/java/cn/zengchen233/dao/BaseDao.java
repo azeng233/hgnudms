@@ -46,7 +46,7 @@ public class BaseDao {
     }
 
     //查询公共类
-    public static ResultSet execute(Connection connection, String sql, Object[] params, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
+    public static ResultSet execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params, ResultSet resultSet) throws SQLException {
         preparedStatement = connection.prepareStatement(sql);
         //根据sql里面的问号来遍历，从1开始
         for (int i = 0; i < params.length; i++) {
@@ -56,7 +56,7 @@ public class BaseDao {
     }
 
     //增删改公共类
-    public static int execute(Connection connection, String sql, Object[] params, PreparedStatement preparedStatement) throws SQLException {
+    public static int execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params) throws SQLException {
         preparedStatement = connection.prepareStatement(sql);
         //根据sql里面的问号来遍历，从1开始
         for (int i = 0; i < params.length; i++) {
