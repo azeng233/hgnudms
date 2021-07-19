@@ -53,7 +53,11 @@ public class UserServlet extends HttpServlet {
         } else {
             req.setAttribute(Constant.MESSAGE, "新密码有问题!");
         }
-            // req.getRequestDispatcher("pwdmodify.jsp").forward(req, resp);
+        try {
+            req.getRequestDispatcher("pwdmodify.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //验证旧密码
