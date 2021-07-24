@@ -105,7 +105,7 @@ public class UserDaoImpl implements UserDao {
                 sql.append(" and u.userRole = ?");
                 list.add(userRole);
             }
-            sql.append(" order by id DESC limit ?,?");
+            sql.append(" order by id ASC limit ?,?");
             currentPageNo = (currentPageNo-1)*pageSize;
             list.add(currentPageNo);
             list.add(pageSize);
@@ -122,6 +122,7 @@ public class UserDaoImpl implements UserDao {
                 _user.setBirthday(rs.getDate("birthday"));
                 _user.setTelephoneNum(rs.getString("telephoneNum"));
                 _user.setUserRole(rs.getInt("userRole"));
+                _user.setDormNum(rs.getString("dormNum"));
                 userList.add(_user);
             }
             BaseDao.closeResources(null, pstm, rs);
@@ -135,10 +136,10 @@ public class UserDaoImpl implements UserDao {
         int updateRows = 0;
         if(connection != null){
             String sql = "insert into user (userCode,userName,userPassword,gender," +
-                    "birthday,userRole,telephoneNum)" +
-                    "values(?,?,?,?,?,?,?)";
+                    "birthday,userRole,dormNum,telephoneNum)" +
+                    "values(?,?,?,?,?,?,?,?)";
             Object[] params = {user.getUserCode(),user.getUserName(),user.getUserPassword(),
-                    user.getGender(),user.getBirthday(),user.getUserRole(),
+                    user.getGender(),user.getBirthday(),user.getUserRole(),user.getDormNum(),
                     user.getTelephoneNum()};
             updateRows = BaseDao.execute(connection, pstm, sql, params);
             BaseDao.closeResources(null, pstm, null);
@@ -165,9 +166,9 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement pstm = null;
         if(null != connection){
             String sql = "update user set userName=?,"+
-                    "gender=?,birthday=?,telephoneNum=?,userRole=? where id = ? ";
+                    "gender=?,birthday=?,telephoneNum=?,userRole=?,dormNum=? where id=? ";
             Object[] params = {user.getUserName(),user.getGender(),user.getBirthday(),
-                    user.getTelephoneNum(),user.getUserRole(),user.getId()};
+                    user.getTelephoneNum(),user.getUserRole(),user.getDormNum(),user.getId()};
             flag = BaseDao.execute(connection, pstm, sql, params);
             BaseDao.closeResources(null, pstm, null);
         }

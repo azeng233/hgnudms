@@ -34,7 +34,7 @@
 			<th width="10%">用户编码</th>
 			<th width="20%">用户名称</th>
 			<th width="10%">性别</th>
-			<th width="10%">年龄</th>
+			<th width="10%">宿舍号</th>
 			<th width="10%">电话</th>
 			<th width="10%">用户角色</th>
 			<th width="30%">操作</th>
@@ -54,7 +54,7 @@
 							</span>
 				</td>
 				<td>
-					<span>${user.age}</span>
+					<span>${user.dormNum}</span>
 				</td>
 				<td>
 					<span>${user.telephoneNum}</span>

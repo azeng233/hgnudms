@@ -39,12 +39,12 @@
 			
 		       <div>
                     <label for="userphone">用户电话：</label>
-                    <input type="text" name="phone" id="phone" value="${user.phone }"> 
+                    <input type="text" name="phone" id="phone" value="${user.telephoneNum }">
                     <font color="red"></font>
                </div>
                 <div>
-                    <label for="userAddress">用户地址：</label>
-                    <input type="text" name="address" id="address" value="${user.address }">
+                    <label for="userAddress">宿舍号：</label>
+                    <input type="text" name="dormNum" id="dormNum" value="${user.dormNum }">
                 </div>
 				<div>
                     <label >用户角色：</label>

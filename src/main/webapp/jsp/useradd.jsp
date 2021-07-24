@@ -51,8 +51,8 @@
 					<font color="red"></font>
                 </div>
                 <div>
-                    <label for="address">用户地址：</label>
-                   <input name="address" id="address"  value="">
+                    <label for="dormNum">宿舍号：</label>
+                   <input name="dormNum" id="dormNum"  value="">
                 </div>
                 <div>
                     <label >用户角色：</label>

@@ -10,14 +10,16 @@ public class User {
     private int gender;
     private Date birthday;
     private int userRole;
-    private int dormNum;
+    private String dormNum;
     private String telephoneNum;
     private String disciplinary;
+
+    private Integer age;
 
     public User() {
     }
 
-    public User(int id, String userCode, String userName, String userPassword, int gender, Date birthday, int userRole, int dormNum, String telephoneNum, String disciplinary) {
+    public User(int id, String userCode, String userName, String userPassword, int gender, Date birthday, int userRole, String dormNum, String telephoneNum, String disciplinary, Integer age) {
         this.id = id;
         this.userCode = userCode;
         this.userName = userName;
@@ -28,6 +30,7 @@ public class User {
         this.dormNum = dormNum;
         this.telephoneNum = telephoneNum;
         this.disciplinary = disciplinary;
+        this.age = age;
     }
 
     public int getId() {
@@ -86,11 +89,11 @@ public class User {
         this.userRole = userRole;
     }
 
-    public int getDormNum() {
+    public String getDormNum() {
         return dormNum;
     }
 
-    public void setDormNum(int dormNum) {
+    public void setDormNum(String dormNum) {
         this.dormNum = dormNum;
     }
 
@@ -108,5 +111,13 @@ public class User {
 
     public void setDisciplinary(String disciplinary) {
         this.disciplinary = disciplinary;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }
