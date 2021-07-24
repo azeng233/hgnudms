@@ -9,9 +9,9 @@ var imgNo = "<img width='15px' src='"+path+"/images/n.png' />";
  * status：true/false --验证是否通过
  */
 function validateTip(element,css,tipString,status){
-    element.css(css);
-    element.html(tipString);
-
-    element.prev().attr("validateStatus",status);
+	element.css(css);
+	element.html(tipString);
+	
+	element.prev().attr("validateStatus",status);
 }
 var referer = $("#referer").val();

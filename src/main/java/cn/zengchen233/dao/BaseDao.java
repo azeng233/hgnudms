@@ -12,13 +12,14 @@ public class BaseDao {
     private static String username;
     private static String password;
 
-    //静态代码块，类加载的时候就会自动初始化
+    //静态代码块，类加载的时候就初始化
     static {
         Properties properties = new Properties();
-        //本地数据库
-        // InputStream is = BaseDao.class.getClassLoader().getResourceAsStream("local.properties");
-        //要部署到服务器就是用云服务器
+        //通过类加载器读取对应的资源
+        //云服务器
         InputStream is = BaseDao.class.getClassLoader().getResourceAsStream("database.properties");
+        //本地服务器
+        // InputStream is = BaseDao.class.getClassLoader().getResourceAsStream("local.properties");
 
         try {
             properties.load(is);
@@ -31,7 +32,7 @@ public class BaseDao {
         password = properties.getProperty("password");
     }
 
-    //获取数据库的链接
+    //获取数据库链接
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -40,62 +41,65 @@ public class BaseDao {
             connection = DriverManager.getConnection(url, username, password);
             // System.out.println("数据库连接成功!");
         } catch (Exception e) {
-            // System.out.println("数据库连接失败...");
+            // System.out.println("数据库连接失败!");
+            e.printStackTrace();
         }
         return connection;
     }
 
-    //查询公共类
+    //编写查询公共类
     public static ResultSet execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params, ResultSet resultSet) throws SQLException {
+        //用到了预编译，不需要传参,直接执行
         preparedStatement = connection.prepareStatement(sql);
-        //根据sql里面的问号来遍历，从1开始
         for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+            //占位符从1开始，但是数组从0开始 可能有很多问号 问号从1开始
+            preparedStatement.setObject(i + 1,params[i]);
         }
         return preparedStatement.executeQuery();
     }
 
-    //增删改公共类
-    public static int execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params) throws SQLException {
+    //编写增删改公共方法
+    public static int execute(Connection connection,  PreparedStatement preparedStatement, String sql, Object[] params) throws SQLException {
+        //用到了预编译，不需要传参,直接执行
         preparedStatement = connection.prepareStatement(sql);
-        //根据sql里面的问号来遍历，从1开始
         for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+            //占位符从1开始，但是数组从0开始 可能有很多问号 问号从1开始
+            preparedStatement.setObject(i + 1,params[i]);
         }
         return preparedStatement.executeUpdate();
     }
 
-    //释放资源类
+    //释放资源
     public static boolean closeResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         boolean flag = true;
-        if (resultSet != null) {
+        if(resultSet != null){
             try {
                 resultSet.close();
-                resultSet = null;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                resultSet = null;//GC回收
+            } catch (SQLException e) {
+                e.printStackTrace();
                 flag = false;
             }
         }
-        if (preparedStatement != null) {
+        if(preparedStatement != null){
             try {
                 preparedStatement.close();
-                preparedStatement = null;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                preparedStatement = null;//GC回收
+            } catch (SQLException e) {
+                e.printStackTrace();
                 flag = false;
             }
         }
-        if (connection != null) {
+        if(connection != null){
             try {
                 connection.close();
-                connection = null;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                connection = null;//GC回收
+            } catch (SQLException e) {
+                e.printStackTrace();
                 flag = false;
             }
         }
         return true;
     }
-
 }
+

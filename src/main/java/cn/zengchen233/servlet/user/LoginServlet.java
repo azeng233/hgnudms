@@ -14,7 +14,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("userName");
+        String userName = req.getParameter("userCode");
         String userPassword = req.getParameter("userPassword");
         User user = null;
 
@@ -28,7 +28,8 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect("jsp/frame.jsp");
         } else {
             //转发
-            req.getRequestDispatcher("error.jsp").forward(req,resp);
+            req.setAttribute("error","用户名或密码不正确");
+            req.getRequestDispatcher("index.jsp").forward(req,resp);
         }
     }
 

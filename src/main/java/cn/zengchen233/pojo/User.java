@@ -1,32 +1,34 @@
 package cn.zengchen233.pojo;
 
+import java.util.Date;
+
 public class User {
     private int id;
     private String userCode;
     private String userName;
     private String userPassword;
-    private String gender;
+    private int gender;
+    private Date birthday;
     private int userRole;
     private int dormNum;
     private String telephoneNum;
     private String disciplinary;
 
-
     public User() {
     }
 
-    public User(int id, String userCode, String userName, String userPassword, String gender, int userRole, int dormNum, String telephoneNum, String disciplinary) {
+    public User(int id, String userCode, String userName, String userPassword, int gender, Date birthday, int userRole, int dormNum, String telephoneNum, String disciplinary) {
         this.id = id;
         this.userCode = userCode;
         this.userName = userName;
         this.userPassword = userPassword;
         this.gender = gender;
+        this.birthday = birthday;
         this.userRole = userRole;
         this.dormNum = dormNum;
         this.telephoneNum = telephoneNum;
         this.disciplinary = disciplinary;
     }
-
 
     public int getId() {
         return id;
@@ -60,12 +62,20 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public int getUserRole() {
