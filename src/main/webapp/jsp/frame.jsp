@@ -4,7 +4,7 @@
     <img class="wColck" src="${pageContext.request.contextPath }/images/clock.jpg" alt=""/>
     <div class="wFont">
         <h2>${USER_SESSION.userName }</h2>
-        <p>黄冈师范学院宿舍管理系统!</p>
+        <p>欢迎来到黄冈师范学院宿舍管理系统!</p>
     </div>
 </div>
 </section>
