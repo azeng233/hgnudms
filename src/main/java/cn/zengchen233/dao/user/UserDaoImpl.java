@@ -194,6 +194,7 @@ public class UserDaoImpl implements UserDao {
                 user.setBirthday(rs.getDate("birthday"));
                 user.setUserRole(rs.getInt("userRole"));
                 user.setTelephoneNum(rs.getString("telephoneNum"));
+                user.setDormNum(rs.getString("dormNum"));
             }
             BaseDao.closeResources(null, pstm, rs);
         }
