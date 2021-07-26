@@ -52,12 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getUserCount(String userName, int userRole) {
+    public int getUserCount(String userName, String userDormNum, int userRole) {
         Connection connection = null;
         int count = 0;
         try {
             connection = BaseDao.getConnection();
-            count = userDao.getUserCount(connection, userName, userRole);
+            count = userDao.getUserCount(connection, userName,userDormNum ,userRole);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
 
     //获取用户列表
     @Override
-    public List<User> getUserList(String queryUserName, int queryUserRole, int currentPageNo, int pageSize) {
+    public List<User> getUserList(String queryUserName, String userDormNum, int queryUserRole, int currentPageNo, int pageSize) {
         Connection connection = null;
         List<User> userList = null;
 
         try {
             connection = BaseDao.getConnection();
-            userList = userDao.getUserList(connection, queryUserName,queryUserRole,currentPageNo,pageSize);
+            userList = userDao.getUserList(connection, queryUserName,userDormNum,queryUserRole,currentPageNo,pageSize);
         } catch (Exception e) {
             e.printStackTrace();
         }finally{

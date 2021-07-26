@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int getUserCount(Connection connection, String userName, int userRole) throws Exception {
+    public int getUserCount(Connection connection, String userName, String userDormNum, int userRole) throws Exception {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         int count = 0;
@@ -68,9 +68,15 @@ public class UserDaoImpl implements UserDao {
                 list.add("%" + userName + "%");//index = 0
             }
 
+            if (!StringUtils.isNullOrEmpty(userDormNum)) {
+                sql.append(" and u.dormNum like ?");
+                list.add("%" + userDormNum + "%");//index = 1
+                System.out.println("开始查询宿舍号");
+            }
+
             if (userRole > 0) {
                 sql.append(" and u.userRole = ?");
-                list.add(userRole);//index = 1
+                list.add(userRole);//index = 2
             }
 
             //把list转化为数组
@@ -88,7 +94,7 @@ public class UserDaoImpl implements UserDao {
 
     //获取用户列表
     @Override
-    public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws Exception {
+    public List<User> getUserList(Connection connection, String userName, String userDormNum, int userRole, int currentPageNo, int pageSize) throws Exception {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         List<User> userList = new ArrayList<User>();
@@ -101,10 +107,15 @@ public class UserDaoImpl implements UserDao {
                 sql.append(" and u.userName like ?");
                 list.add("%"+userName+"%");
             }
+            if (!StringUtils.isNullOrEmpty(userDormNum)) {
+                sql.append(" and u.dormNum like ?");
+                list.add("%" + userDormNum + "%");//index = 1
+            }
             if(userRole > 0){
                 sql.append(" and u.userRole = ?");
                 list.add(userRole);
             }
+
             sql.append(" order by id ASC limit ?,?");
             currentPageNo = (currentPageNo-1)*pageSize;
             list.add(currentPageNo);

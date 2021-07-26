@@ -14,10 +14,10 @@ public interface UserDao {
     public int updatePwd(Connection connection, String userCode, String userPassword) throws Exception;
 
     //查询用户总数
-    public int getUserCount(Connection connection, String userName, int userRole) throws Exception;
+    public int getUserCount(Connection connection, String userName, String userDormNum, int userRole) throws Exception;
 
     //通过条件查询userList
-    public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws Exception;
+    public List<User> getUserList(Connection connection, String userName, String userDormNum, int userRole, int currentPageNo, int pageSize) throws Exception;
 
     //增加用户信息
     public int add(Connection connection, User user)throws Exception;

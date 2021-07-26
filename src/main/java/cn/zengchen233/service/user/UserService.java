@@ -12,10 +12,10 @@ public interface UserService {
     public boolean updatePwd(String userCode, String userPassword);
 
     //查询用户数量
-    public int getUserCount(String userName, int userRole);
+    public int getUserCount(String userName, String userDormNum, int userRole);
 
     //根据条件查询用户列表
-    public List<User> getUserList(String queryUserName, int queryUserRole, int currentPageNo, int pageSize);
+    public List<User> getUserList(String queryUserName, String userDormNum, int queryUserRole, int currentPageNo, int pageSize);
 
     //增加用户
     public boolean add(User user);

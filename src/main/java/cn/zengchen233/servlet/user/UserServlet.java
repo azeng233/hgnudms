@@ -123,6 +123,7 @@ public class UserServlet extends HttpServlet {
         String queryUserName = req.getParameter("queryname");
         String temp = req.getParameter("queryUserRole");
         String pageIndex = req.getParameter("pageIndex");
+        String querydormNum = req.getParameter("querydormNum");
         int queryUserRole = 0;
 
         //获取用户列表
@@ -142,8 +143,12 @@ public class UserServlet extends HttpServlet {
         if (pageIndex != null) {
             currentPageNo = Integer.parseInt(pageIndex);
         }
+        if (querydormNum == null) {
+            querydormNum = "";
+        }
+
         //获取用户总数
-        int totalCount = userService.getUserCount(queryUserName, queryUserRole);
+        int totalCount = userService.getUserCount(queryUserName,querydormNum, queryUserRole);
         //总页数支持
         PageSupport pageSupport = new PageSupport();
 
@@ -163,7 +168,7 @@ public class UserServlet extends HttpServlet {
         }
 
         //获取用户列表展示
-        userList = userService.getUserList(queryUserName, queryUserRole, currentPageNo, pageSize);
+        userList = userService.getUserList(queryUserName, querydormNum, queryUserRole,currentPageNo, pageSize);
         req.setAttribute("userList",userList);
 
         RoleService roleService = new RoleServiceImpl();
@@ -175,6 +180,8 @@ public class UserServlet extends HttpServlet {
         req.setAttribute("totalPageCount",totalPageCount);
         req.setAttribute("queryUserName",queryUserName);
         req.setAttribute("queryUserRole",queryUserRole);
+        req.setAttribute("querydormNum",querydormNum);
+
         //返回前端
         try {
             req.getRequestDispatcher("userlist.jsp").forward(req, resp);

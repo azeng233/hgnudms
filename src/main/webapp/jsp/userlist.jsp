@@ -12,6 +12,9 @@
 			<span>用户名：</span>
 			<input name="queryname" class="input-text"	type="text" value="${queryUserName }">
 
+			<span>宿舍号：</span>
+			<input name="querydormNum" class="input-text" type="text" value="${querydormNum }">
+
 			<span>用户角色：</span>
 			<select name="queryUserRole">
 				<c:if test="${roleList != null }">
