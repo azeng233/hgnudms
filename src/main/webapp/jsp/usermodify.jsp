@@ -43,7 +43,7 @@
                     <font color="red"></font>
                </div>
                 <div>
-                    <label for="userAddress">宿舍号：</label>
+                    <label>宿舍号：</label>
                     <input type="text" name="dormNum" id="dormNum" value="${user.dormNum }">
                 </div>
 				<div>
