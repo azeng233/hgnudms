@@ -12,7 +12,7 @@
 
 由于刚刚起步SSM，只能慢慢修改，项目大致修改如下：
 
-- [ ] Dao层修改为Mybatis
+- [x] Dao层修改为Mybatis
 - [ ] 业务层Service和Servlet层采用Spring Framwork
 
 慢慢修改吧！

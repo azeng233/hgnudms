@@ -176,9 +176,9 @@ public class UserServlet extends HttpServlet {
         }
 
         //为了显示正常，添加一个临时变量返回到Dao便于分页。
-        int pageNum = (currentPageNo-1)*pageSize;
+        int flag = (currentPageNo-1)*pageSize;
 
-        map.put("indexPage", pageNum);
+        map.put("indexPage", flag);
         map.put("pageSize", pageSize);
         //获取用户列表展示
         userList = userService.getUserList(map);

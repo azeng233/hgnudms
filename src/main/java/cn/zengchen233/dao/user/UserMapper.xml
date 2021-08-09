@@ -17,7 +17,7 @@
             <if test="userName!=null and userName!=''">
                 and u.userName like concat('%',#{userName},'%')
             </if>
-            <if test="userDormNum!=null and userDormNum!=''">
+            <if test="dormNum!=null and dormNum!=''">
                 and u.dormNum like concat('%',#{dormNum},'%')
             </if>
             <if test="userRole > 0">
