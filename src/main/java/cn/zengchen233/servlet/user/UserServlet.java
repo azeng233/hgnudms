@@ -174,9 +174,11 @@ public class UserServlet extends HttpServlet {
         } else if (currentPageNo > totalPageCount){
             currentPageNo = totalPageCount;
         }
-        int flag = (currentPageNo-1)*pageSize;
 
-        map.put("indexPage", flag);
+        //为了显示正常，添加一个临时变量返回到Dao便于分页。
+        int pageNum = (currentPageNo-1)*pageSize;
+
+        map.put("indexPage", pageNum);
         map.put("pageSize", pageSize);
         //获取用户列表展示
         userList = userService.getUserList(map);
