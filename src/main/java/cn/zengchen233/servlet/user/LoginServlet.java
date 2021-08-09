@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
 
         //和数据库中的做对比,调用业务层
         UserService userService = new UserServiceImpl();
-        user = userService.login(userName, userPassword);
+        user = userService.login(userName);
 
         if (user != null && userPassword.equals(user.getUserPassword())) {
             req.getSession().setAttribute(Constant.USER_SESSION, user);

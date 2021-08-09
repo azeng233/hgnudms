@@ -1,182 +1,146 @@
 package cn.zengchen233.service.user;
 
-import cn.zengchen233.dao.BaseDao;
-import cn.zengchen233.dao.user.UserDao;
-import cn.zengchen233.dao.user.UserDaoImpl;
+import cn.zengchen233.dao.user.UserMapper;
 import cn.zengchen233.pojo.User;
+import cn.zengchen233.util.MybatisUtils;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+@SuppressWarnings("all")
 public class UserServiceImpl implements UserService {
 
-    //业务层都会引用dao
-    private UserDao userDao;
+    private UserMapper userMapper;
 
-    public UserServiceImpl() {
-        userDao = new UserDaoImpl();
+    private MybatisUtils mybatisUtils;
+
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     @Override
-    public User login(String userCode, String userPassword) {
-        Connection connection = null;
-        User user = null;
-        try {
-            connection = BaseDao.getConnection();
-            user = userDao.getLoginUser(connection, userCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResources(connection,null,null);
-        }
-        return user;
+    public User login(String userCode) {
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        User loginUser = mapper.getLoginUser(userCode);
+
+        sqlSession.close();
+        return loginUser;
     }
 
     @Override
     public boolean updatePwd(String userCode, String userPassword) {
-        Connection connection = null;
         boolean flag = false;
-        try {
-            connection = BaseDao.getConnection();
-            if (userDao.updatePwd(connection, userCode, userPassword) > 0) {
-                flag = true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResources(connection, null, null);
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        int i = mapper.updatePwd(userCode, userPassword);
+
+        if (i > 0) {
+            flag = true;
         }
+        sqlSession.close();
         return flag;
     }
 
     @Override
-    public int getUserCount(String userName, String userDormNum, int userRole) {
-        Connection connection = null;
+    public int getUserCount(Map<String, Object> map) {
         int count = 0;
-        try {
-            connection = BaseDao.getConnection();
-            count = userDao.getUserCount(connection, userName,userDormNum ,userRole);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResources(connection, null, null);
-        }
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        count = mapper.getUserCount(map);
+
+        sqlSession.close();
         return count;
     }
 
-    //获取用户列表
     @Override
-    public List<User> getUserList(String queryUserName, String userDormNum, int queryUserRole, int currentPageNo, int pageSize) {
-        Connection connection = null;
-        List<User> userList = null;
+    public List<User> getUserList(Map<String, Object> map) {
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
 
-        try {
-            connection = BaseDao.getConnection();
-            userList = userDao.getUserList(connection, queryUserName,userDormNum,queryUserRole,currentPageNo,pageSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            BaseDao.closeResources(connection, null, null);
-        }
+        List<User> userList = mapper.getUserList(map);
+
+        sqlSession.close();
         return userList;
     }
 
     @Override
-    public boolean add(User user) {
+    public boolean add(Map<String, Object> map) {
         boolean flag = false;
-        Connection connection = null;
-        try {
-            connection = BaseDao.getConnection();
-            connection.setAutoCommit(false); //开启JDBC事务管理
-            int updateRows = userDao.add(connection,user);
-            connection.commit();
-            if(updateRows > 0){
-                flag = true;
-                System.out.println("add success!");
-            }else{
-                System.out.println("add failed!");
-            }
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                System.out.println("rollback==================");
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }finally{
-            //在service层进行connection连接的关闭
-            BaseDao.closeResources(connection, null, null);
+        int add = mapper.add(map);
+
+        if (add > 0) {
+            flag = true;
         }
+
+        sqlSession.close();
         return flag;
     }
 
     @Override
     public boolean deleteUserById(Integer delId) {
-        Connection connection = null;
         boolean flag = false;
-        try {
-            connection = BaseDao.getConnection();
-            if(userDao.deleteUserById(connection,delId) > 0)
-                flag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            BaseDao.closeResources(connection, null, null);
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        int i = mapper.deleteUserById(delId);
+
+        if (i > 0) {
+            flag = true;
         }
+
+        sqlSession.close();
         return flag;
     }
 
     @Override
-    public boolean modify(User user) {
-        Connection connection = null;
+    public boolean modify(Map<String, Object> map) {
         boolean flag = false;
-        try {
-            connection = BaseDao.getConnection();
-            if(userDao.modify(connection,user) > 0)
-                flag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            BaseDao.closeResources(connection, null, null);
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        int modify = mapper.modify(map);
+
+        if (modify > 0) {
+            flag = true;
         }
+
+        sqlSession.close();
         return flag;
     }
 
     @Override
     public User selectUserCodeExist(String userCode) {
-        Connection connection = null;
-        User user = null;
-        try {
-            connection = BaseDao.getConnection();
-            user = userDao.getLoginUser(connection, userCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            BaseDao.closeResources(connection, null, null);
-        }
-        return user;
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        User loginUser = mapper.getLoginUser(userCode);
+        return loginUser;
     }
 
     @Override
-    public User getUserById(String id) {
-        User user = null;
-        Connection connection = null;
-        try{
-            connection = BaseDao.getConnection();
-            user = userDao.getUserById(connection,id);
-        }catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-            user = null;
-        }finally{
-            BaseDao.closeResources(connection, null, null);
-        }
-        return user;
+    public User getUserById(int id) {
+        SqlSession sqlSession = mybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        User userById = mapper.getUserById(id);
+
+        sqlSession.close();
+        return userById;
     }
 
-
+    @Test
+    public void test() {
+        UserServiceImpl userService = new UserServiceImpl();
+        User admin = userService.login("admin");
+        System.out.println(admin);
+    }
 }

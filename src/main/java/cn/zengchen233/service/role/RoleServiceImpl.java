@@ -1,36 +1,32 @@
 package cn.zengchen233.service.role;
 
-import cn.zengchen233.dao.BaseDao;
-import cn.zengchen233.dao.role.RoleDao;
-import cn.zengchen233.dao.role.RoleDaoImpl;
+import cn.zengchen233.dao.role.RoleMapper;
 import cn.zengchen233.pojo.Role;
+import cn.zengchen233.util.MybatisUtils;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.util.List;
 
 public class RoleServiceImpl implements RoleService {
-    //引入Dao
-    private RoleDao roleDao;
 
-    public RoleServiceImpl() {
-        roleDao = new RoleDaoImpl();
+    private RoleMapper roleMapper;
+
+    public void setRoleMapper(RoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
     }
 
-    @Override
     public List<Role> getRoleList() {
-        Connection connection = null;
-        List<Role> roleList = null;
-        try {
-            connection = BaseDao.getConnection();
-            roleList = roleDao.getRoleList(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResources(connection, null, null);
-        }
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
+
+        List<Role> roleList = mapper.getRoleList();
+
+        sqlSession.close();
         return roleList;
     }
+
 
     @Test
     public void test() {

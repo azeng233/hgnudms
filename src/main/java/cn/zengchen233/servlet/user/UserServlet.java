@@ -124,6 +124,7 @@ public class UserServlet extends HttpServlet {
         String temp = req.getParameter("queryUserRole");
         String pageIndex = req.getParameter("pageIndex");
         String querydormNum = req.getParameter("querydormNum");
+        System.out.println(querydormNum);
         int queryUserRole = 0;
 
         //获取用户列表
@@ -147,8 +148,15 @@ public class UserServlet extends HttpServlet {
             querydormNum = "";
         }
 
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("userName", queryUserName);
+        map.put("dormNum", querydormNum);
+        map.put("userRole", queryUserRole);
+
+
         //获取用户总数
-        int totalCount = userService.getUserCount(queryUserName,querydormNum, queryUserRole);
+        int totalCount = userService.getUserCount(map);
         //总页数支持
         PageSupport pageSupport = new PageSupport();
 
@@ -166,9 +174,12 @@ public class UserServlet extends HttpServlet {
         } else if (currentPageNo > totalPageCount){
             currentPageNo = totalPageCount;
         }
+        int flag = (currentPageNo-1)*pageSize;
 
+        map.put("indexPage", flag);
+        map.put("pageSize", pageSize);
         //获取用户列表展示
-        userList = userService.getUserList(queryUserName, querydormNum, queryUserRole,currentPageNo, pageSize);
+        userList = userService.getUserList(map);
         req.setAttribute("userList",userList);
 
         RoleService roleService = new RoleServiceImpl();
@@ -195,6 +206,7 @@ public class UserServlet extends HttpServlet {
     //增加用户
     private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("add()================");
+        Map<String,Object> map = new HashMap<>();
         String userCode = req.getParameter("userCode");
         String userName = req.getParameter("userName");
         String userPassword = req.getParameter("userPassword");
@@ -204,25 +216,23 @@ public class UserServlet extends HttpServlet {
         String userRole = req.getParameter("userRole");
         String dormNum = req.getParameter("dormNum");
 
-        User user = new User();
-        user.setUserCode(userCode);
-        user.setUserName(userName);
-        user.setUserPassword(userPassword);
-        user.setDormNum(dormNum);
-
         try {
-            user.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(birthday));
+            map.put("birthday",new SimpleDateFormat("yyyy-MM-dd").parse(birthday));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        user.setGender(Integer.valueOf(gender));
-        user.setTelephoneNum(phone);
-        user.setUserRole(Integer.valueOf(userRole));
-        user.setDormNum(dormNum);
+        map.put("userCode",userCode);
+        map.put("userName",userName);
+        map.put("userPassword",userPassword);
+        map.put("gender",gender);
+
+        map.put("telephoneNum",phone);
+        map.put("userRole",userRole);
+        map.put("dormNum",dormNum);
 
         UserService userService = new UserServiceImpl();
-        if(userService.add(user)){
+        if(userService.add(map)){
             resp.sendRedirect(req.getContextPath()+"/jsp/user.do?method=query");
         }else{
             req.getRequestDispatcher("useradd.jsp").forward(req, resp);
@@ -259,6 +269,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,Object> map = new HashMap<>();
         String id = request.getParameter("uid");
         String userName = request.getParameter("userName");
         String gender = request.getParameter("gender");
@@ -266,22 +277,21 @@ public class UserServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String dormNum = request.getParameter("dormNum");
         String userRole = request.getParameter("userRole");
-
-        User user = new User();
-        user.setId(Integer.valueOf(id));
-        user.setUserName(userName);
-        user.setGender(Integer.valueOf(gender));
         try {
-            user.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(birthday));
+            map.put("birthday",new SimpleDateFormat("yyyy-MM-dd").parse(birthday));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        user.setTelephoneNum(phone);
-        user.setDormNum(dormNum);
-        user.setUserRole(Integer.valueOf(userRole));
+
+        map.put("id",Integer.valueOf(id));
+        map.put("userName",userName);
+        map.put("gender",Integer.valueOf(gender));
+        map.put("telephoneNum",phone);
+        map.put("userRole",Integer.valueOf(userRole));
+        map.put("dormNum",dormNum);
 
         UserService userService = new UserServiceImpl();
-        if(userService.modify(user)){
+        if(userService.modify(map)){
             response.sendRedirect(request.getContextPath()+"/jsp/user.do?method=query");
         }else{
             request.getRequestDispatcher("usermodify.jsp").forward(request, response);
@@ -335,7 +345,7 @@ public class UserServlet extends HttpServlet {
         if(!StringUtils.isNullOrEmpty(id)){
             //调用后台方法得到user对象
             UserService userService = new UserServiceImpl();
-            User user = userService.getUserById(id);
+            User user = userService.getUserById(Integer.parseInt(id));
             request.setAttribute("user", user);
             request.getRequestDispatcher(url).forward(request, response);
         }
