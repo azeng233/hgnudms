@@ -10,5 +10,6 @@
         <module name="黄冈师范学院宿舍管理系统" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>
