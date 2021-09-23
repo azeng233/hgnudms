@@ -9,7 +9,7 @@
     <settings>
         <setting name="logImpl" value="STDOUT_LOGGING"/> <!--标准的日志工厂实现-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="defaultStatementTimeout" value="300"/>
     </settings>
 
     <typeAliases>
